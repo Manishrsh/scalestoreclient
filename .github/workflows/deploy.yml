@@ -1,4 +1,4 @@
-name: Deploy to AWS S3 and Configure Subdomain
+name: Deploy to Vercel
 
 on:
   push:
@@ -21,41 +21,33 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        npm run build  # Ensure your React app is built
+        npm install -g vercel  # Install Vercel CLI
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-
-    - name: Sync S3 bucket
+    - name: Deploy to Vercel
+      id: deploy
       run: |
-        aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
+        DEPLOYMENT_URL=$(vercel --prod --confirm --token ${{ secrets.VERCEL_TOKEN }} | grep "https://" | awk '{print $1}')
+        echo "Deployment URL: $DEPLOYMENT_URL"
+        echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
 
-    - name: Output S3 Website URL
+    - name: Add Custom Subdomain to Vercel
       run: |
-        echo "S3 Website URL: http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
-
-    - name: Update Route 53 DNS Record
-      run: |
-        aws route53 change-resource-record-sets \
-          --hosted-zone-id ${{ secrets.ROUTE53_HOSTED_ZONE_ID }} \
-          --change-batch '{
-            "Changes": [
-              {
-                "Action": "UPSERT",
-                "ResourceRecordSet": {
-                  "Name": "${{ secrets.SUBDOMAIN }}.manishmoneymanage.tech.",
-                  "Type": "CNAME",
-                  "TTL": 60,
-                  "ResourceRecords": [
-                    {
-                      "Value": "${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
-                    }
-                  ]
-                }
-              }
-            ]
+        curl -X POST "https://api.vercel.com/v9/projects/${{ secrets.VERCEL_PROJECT_ID }}/domains" \
+          -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "name": "${{ secrets.SUBDOMAIN }}.manishmoneymanage.tech"
           }'
+
+    - name: Assign Subdomain to Deployment
+      run: |
+        curl -X PATCH "https://api.vercel.com/v2/domains/${{ secrets.SUBDOMAIN }}.manishmoneymanage.tech" \
+          -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "project": "${{ secrets.VERCEL_PROJECT_ID }}"
+          }'
+
+    - name: Output Deployment URL with Subdomain
+      run: |
+        echo "Subdomain URL: https://${{ secrets.SUBDOMAIN }}.manishmoneymanage.tech"
