@@ -1,4 +1,4 @@
-name: Deploy to S3
+name: Deploy to Vercel
 
 on:
   push:
@@ -13,17 +13,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        node-version: '16'  # Specify your Node.js version
 
-    - name: Sync S3 bucket
+    - name: Install dependencies
       run: |
-        aws s3 sync . s3://${{ secrets.S3_BUCKET_NAME }} --delete
+        npm install
+        npm install -g vercel  # Install Vercel CLI
 
-    - name: Get S3 Website URL
+    - name: Deploy to Vercel
       run: |
-        echo "URL: http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
+        vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+
+    - name: Get Vercel Deployment URL
+      run: |
+        # Retrieve the deployment URL
+        DEPLOYMENT_URL=$(vercel --prod --confirm --token ${{ secrets.VERCEL_TOKEN }} | grep "Deployment URL" | awk '{print $3}')
+        echo "Deployment URL: $DEPLOYMENT_URL"
+        echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
