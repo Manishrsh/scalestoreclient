@@ -18,7 +18,7 @@ const Heathcheck = () => {
 
     checklogin()
   return (
-    <div>Heathchecksssss</div>
+    <div>Heathcheckssssss</div>
   )
 }
 
