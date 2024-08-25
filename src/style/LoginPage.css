@@ -1,0 +1,138 @@
+/* Ensure body and html take full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Base Styles (for larger screens) */
+#Loginwapper {
+    width: 500px;
+    background-color: #ebebeb;
+    padding: 50px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.LoginConatiner {
+    background-color: #b3c0d0;
+    min-height: 100vh; /* Ensure container covers full height */
+    display: flex;
+    align-items: center; /* Center content vertically */
+}
+
+.loginImage {
+    width: 500px;
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.imageWapper {
+    background-color: #ebebeb;
+    height: 100%;
+}
+
+.mainwapperlogin {
+    width: 1200px;
+    height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.lableinput {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: grey;
+}
+
+#submitBtn {
+    background-color: #5a8dee;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+.loginmainwapper {
+    background-color: white;
+    padding: 20px;
+}
+
+/* Responsive Styles (for screens smaller than 768px) */
+@media (max-width: 768px) {
+    #Loginwapper {
+        width: 90%;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .input {
+        padding: 8px;
+    }
+
+    .loginImage {
+        width: 100%;
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
+    .imageWapper {
+        background-color: #ebebeb;
+        height: auto;
+        padding: 20px;
+    }
+
+    .mainwapperlogin {
+        width: 100%;
+        height: auto;
+        margin-top: 100px;
+        margin-bottom: 20px;
+        box-shadow: none;
+        padding: 30px;
+    }
+
+    .lableinput {
+        font-size: 14px;
+    }
+
+    #submitBtn {
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* Responsive Styles (for screens smaller than 576px) */
+@media (max-width: 576px) {
+    #Loginwapper {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .loginImage {
+        display: none; /* Hide the image entirely on very small screens */
+    }
+
+    .mainwapperlogin {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .form {
+        padding: 10px;
+    }
+}

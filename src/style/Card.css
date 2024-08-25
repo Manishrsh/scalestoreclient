@@ -1,0 +1,6 @@
+.card-media{
+    object-fit: contain; /* or 'cover' based on preference */
+    margin:auto;
+    width: auto;
+    
+}
