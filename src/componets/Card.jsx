@@ -58,7 +58,7 @@ const Cards = () => {
               </CardContent>
               <CardActions>
                 <Button size="small" onClick={handleBuyClick}>Buy</Button>
-                <Button size="small">Add to cart</Button>
+                <Button size="small">Add to carts</Button>
               </CardActions>
             </Card>
           </Col>
