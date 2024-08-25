@@ -22,7 +22,7 @@ const AddProduct = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Please upload a .jpg file");
+      alert("Please upload a .jpg files");
     }
   };
 
