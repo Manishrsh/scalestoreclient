@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,46 +9,35 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
-import useAuth from '../hooks/auth.js'
-
+import useFetchData from '../hooks/fetch.js';
+import useAuth from '../hooks/auth.js';
 
 const Cards = () => {
-  const [data, setData] = useState([]);
-    const Navigate = useNavigate()
-  useEffect(() => {
-    const getproductdata = async()=>{
-      try{
-    const res = await axios.get('http://localhost:3000/product/get',{
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-      setData(res.data)
-    console.log("Product added successfully:", res);
-  } catch (error) {
-    console.error("Error uploading product:", error);
-    alert("There was an error uploading the product. Please try again.");
-  }
-}
-
-getproductdata()
-  },[])
+  const navigate = useNavigate();
+  useAuth(); // Custom hook for authentication
 
   const getAuthToken = () => {
     return localStorage.getItem('token');
   };
 
-  const clickbye = ()=>{
-    Navigate('/inquiry')
-  }
-  useAuth()
-  
+  const { data, loading, error } = useFetchData('http://localhost:3000/product/get', {
+    headers: {
+      Authorization: `Bearer ${getAuthToken()}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  const handleBuyClick = () => {
+    navigate('/inquiry');
+  };
+
   return (
     <Container>
       <Row>
-        {data.map((item, index) => (
+        {data && data.map((item, index) => (
           <Col sm={4} key={index}>
             <Card sx={{ maxWidth: 345, margin: '0 auto' }}> {/* Centers the Card within the Col */}
               <CardMedia
@@ -68,7 +57,7 @@ getproductdata()
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={clickbye}>Buy</Button>
+                <Button size="small" onClick={handleBuyClick}>Buy</Button>
                 <Button size="small">Add to cart</Button>
               </CardActions>
             </Card>
