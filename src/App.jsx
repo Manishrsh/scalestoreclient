@@ -28,7 +28,7 @@ function App() {
       <>
         {!shouldHideNav && <Navbars />}
         <Routes>
-          <Route path='/dashboard' element={<Card />} />
+          <Route path='/dashboard' element={<Card />} /> 
           <Route path='/heathcheck' element={<Heathcheck />} />
           <Route path='/inquiry' element={<Inquiry />} />
           <Route path='/login' element={<LoginPage />} />
