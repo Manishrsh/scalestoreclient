@@ -1,4 +1,4 @@
-name: Deploy to AWS S3 and Configure Subdomain
+name: Deploy to AWS S3
 
 on:
   push:
@@ -37,25 +37,3 @@ jobs:
     - name: Output S3 Website URL
       run: |
         echo "S3 Website URL: http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
-
-    - name: Update Route 53 DNS Record
-      run: |
-        aws route53 change-resource-record-sets \
-          --hosted-zone-id ${{ secrets.ROUTE53_HOSTED_ZONE_ID }} \
-          --change-batch '{
-            "Changes": [
-              {
-                "Action": "UPSERT",
-                "ResourceRecordSet": {
-                  "Name": "${{ secrets.SUBDOMAIN }}",
-                  "Type": "CNAME",
-                  "TTL": 60,
-                  "ResourceRecords": [
-                    {
-                      "Value": "${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
-                    }
-                  ]
-                }
-              }
-            ]
-          }'
