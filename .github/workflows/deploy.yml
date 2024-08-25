@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to AWS S3 and Configure Subdomain
 
 on:
   push:
@@ -21,15 +21,41 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        npm install -g vercel  # Install Vercel CLI
+        npm run build  # Ensure your React app is built
 
-    - name: Deploy to Vercel
-      run: |
-        vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Get Vercel Deployment URL
+    - name: Sync S3 bucket
       run: |
-        # Retrieve the deployment URL
-        DEPLOYMENT_URL=$(vercel --prod --confirm --token ${{ secrets.VERCEL_TOKEN }} | grep "Deployment URL" | awk '{print $3}')
-        echo "Deployment URL: $DEPLOYMENT_URL"
-        echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+        aws s3 sync ./build s3://${{ secrets.S3_BUCKET_NAME }} --delete
+
+    - name: Output S3 Website URL
+      run: |
+        echo "S3 Website URL: http://${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
+
+    - name: Update Route 53 DNS Record
+      run: |
+        aws route53 change-resource-record-sets \
+          --hosted-zone-id ${{ secrets.ROUTE53_HOSTED_ZONE_ID }} \
+          --change-batch '{
+            "Changes": [
+              {
+                "Action": "UPSERT",
+                "ResourceRecordSet": {
+                  "Name": "${{ secrets.SUBDOMAIN }}",
+                  "Type": "CNAME",
+                  "TTL": 60,
+                  "ResourceRecords": [
+                    {
+                      "Value": "${{ secrets.S3_BUCKET_NAME }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
+                    }
+                  ]
+                }
+              }
+            ]
+          }'
