@@ -20,7 +20,7 @@ const Cards = () => {
     return localStorage.getItem('token');
   };
 
-  const { data, loading, error } = useFetchData('http://localhost:3000/product/get', {
+  const { data, loading, error } = useFetchData(`${process.env.BACKEND_API}/product/get`, {
     headers: {
       Authorization: `Bearer ${getAuthToken()}`,
       'Content-Type': 'multipart/form-data',
