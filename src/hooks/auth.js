@@ -10,7 +10,7 @@ const useAuth =  () => {
         
     const getauth = async()=>{
     try {
-        const response = await axios.get('http://localhost:3000/api/user-info', {
+        const response = await axios.get(`${process.env.BACKEND_API}/api/user-info`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
