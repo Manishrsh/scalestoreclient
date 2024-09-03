@@ -8,7 +8,7 @@ const Heathcheck = () => {
       const token = getAuthToken()
     // Verify token by making a request to a protected route
     const checklogin = async()=>{
-    const protectedResponse = await axios.get('http://localhost:3000/api/protected', {
+    const protectedResponse = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/protected`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import Alert from "@mui/material/Alert";
 import "../style/AddProduct.css";
 import axios from "axios";
 import useAuth from "../hooks/auth";
@@ -7,8 +8,7 @@ import useAuth from "../hooks/auth";
 const AddProduct = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  const { register, handleSubmit } = useForm();
-  useAuth()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -22,7 +22,7 @@ const AddProduct = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      alert("Please upload a .jpg files");
+      alert("Please upload a .jpg file");
     }
   };
 
@@ -43,6 +43,7 @@ const AddProduct = () => {
       });
 
       console.log("Product added successfully:", res.data);
+      reset(); // Reset the form after successful submission
     } catch (error) {
       console.error("Error uploading product:", error);
       alert("There was an error uploading the product. Please try again.");
@@ -52,7 +53,7 @@ const AddProduct = () => {
   const getAuthToken = () => {
     return localStorage.getItem('token');
   };
-  getAuthToken()
+
   return (
     <div className="add-product-container">
       <h2>Add New Product</h2>
@@ -71,18 +72,28 @@ const AddProduct = () => {
 
         <div className="product-details-wrapper">
           <label>Name of Product</label>
-          <input type="text" {...register("productName", { required: true })} />
+          <input type="text" {...register("productName", { required: true, maxLength: 80 })} />
+          {errors.productName && (
+            <Alert severity="error">Product Name is required and must be under 80 characters.</Alert>
+          )}
 
           <label>Product Description</label>
-          <textarea
-            {...register("productDescription", { required: true })}
-          ></textarea>
+          <textarea {...register("productDescription", { required: true, maxLength: 100 })}></textarea>
+          {errors.productDescription && (
+            <Alert severity="error">Product Description is required and must be under 100 characters.</Alert>
+          )}
 
           <label>Price</label>
           <input type="number" {...register("price", { required: true })} />
+          {errors.price && (
+            <Alert severity="error">Price is required.</Alert>
+          )}
 
           <label>Quantity/Stock Level</label>
           <input type="number" {...register("quantity", { required: true })} />
+          {errors.quantity && (
+            <Alert severity="error">Quantity is required.</Alert>
+          )}
         </div>
 
         <button type="submit" className="submit-button">

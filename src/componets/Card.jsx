@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,60 +9,96 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from 'react-router-dom';
-import useFetchData from '../hooks/fetch.js';
-import useAuth from '../hooks/auth.js';
+import { useDispatch } from 'react-redux';
+import { updateinqproduct } from '../slices/inqProducts.js';
 
 const Cards = () => {
   const navigate = useNavigate();
-  useAuth(); // Custom hook for authentication
+  const dispatch = useDispatch();
 
   const getAuthToken = () => {
     return localStorage.getItem('token');
   };
 
-  const { data, loading, error } = useFetchData(`${process.env.BACKEND_API}/product/get`, {
-    headers: {
-      Authorization: `Bearer ${getAuthToken()}`,
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const [prodata, setProdata] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const apiUrl = import.meta.env.VITE_BACKEND_API;
+      console.log(apiUrl)
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/product/get`, {
+          headers: {
+            Authorization: `Bearer ${getAuthToken()}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+          console.log(data)
+        if (Array.isArray(data)) {
+          setProdata(data);
+        } else {
+          throw new Error('Data is not an array');
+        }
+      } catch (err) {
+        console.log(err)
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <p>Errorss: {error}</p>;
 
-  const handleBuyClick = () => {
+  const handleBuyClick = (id) => {
+    dispatch(updateinqproduct(id)); // Correct action to dispatch
     navigate('/inquiry');
   };
 
   return (
     <Container>
       <Row>
-        {data && data.map((item, index) => (
-          <Col sm={4} key={index}>
-            <Card sx={{ maxWidth: 345, margin: '0 auto' }}> {/* Centers the Card within the Col */}
-              <CardMedia
-                sx={{
-                  height: 200,
-                  backgroundSize: 'contain', // Ensures the image fits within the container
-                }}
-                image={item.imageUrl}
-                title={item.productname}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {item.productname}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {item.productdis}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={handleBuyClick}>Buy</Button>
-                <Button size="small">Add to carts</Button>
-              </CardActions>
-            </Card>
-          </Col>
-        ))}
+        {prodata.length > 0 ? (
+          prodata.map((item, index) => (
+            <Col sm={4} key={index} >
+              <Card sx={{ maxWidth: 300, mb: 5, maxHeight: 350 }}>
+                <CardMedia
+                  sx={{
+                    height: 200,
+                    backgroundSize: 'contain',
+                  }}
+                  image={item.imageUrl}
+                  title={item.productname}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {item.productname}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.productdis}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={() => handleBuyClick(item._id)}>Buy</Button>
+                  <Button size="small">Add to cart</Button>
+                </CardActions>
+              </Card>
+            </Col>
+          ))
+        ) : (
+          <p>No products available</p>
+        )}
       </Row>
     </Container>
   );

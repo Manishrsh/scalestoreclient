@@ -9,9 +9,11 @@ const useFetchData = (url, options = {}) => {
   useEffect(() => {
     let isMounted = true; // To prevent setting state on unmounted component
     const fetchData = async () => {
+    console.log('called')
       try {
         setLoading(true);
         const response = await axios.get(url, options);
+        console.log(response)
         if (isMounted) {
           setData(response.data);
           setError(null);

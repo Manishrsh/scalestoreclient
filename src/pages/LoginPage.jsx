@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { updaterole } from '../slices/userroleslice.js';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../slices/authSlice.js';
+
 
 const LoginPage = () => {
 
@@ -22,11 +24,13 @@ const LoginPage = () => {
       const res = await axios.post('http://localhost:3000/login', data);
       localStorage.setItem('token', res.data.token);
       console.log(res)
+      dispatch(login());
 
       const userrole = res.data.userrole;
       console.log(userrole)
       setUserrole(userrole);  // Update the local state
-      dispatch(updaterole(userrole));  // Dispatch the action to update Redux state
+      dispatch(updaterole(userrole));
+        // Dispatch the action to update Redux state
       navigate('/dashboard')
     } catch (error) {
       alert(error);

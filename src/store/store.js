@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userroleReducer from '../slices/userroleslice.js'; // Adjust the path based on your project structure
+import userroleReducer from '../slices/userroleslice.js';
+import authReducer from '../slices/authSlice.js'; 
+import inqProductReducer from '../slices/inqProducts.js'; 
 
 const store = configureStore({
   reducer: {
-    userRole: userroleReducer, // Combine your reducer here
+    userRole: userroleReducer,
+    auth: authReducer, 
+    inqProduct: inqProductReducer,
   },
 });
 
