@@ -9,6 +9,7 @@ import AddProduct from "./pages/AddProduct.jsx";
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import Heathcheck from "./componets/Heathcheck.jsx";
+import Check from "./componets/Check.jsx";
 import Page404 from "./pages/Page404.jsx";
 import ProtectedRoute from "./utils/Protected.route.jsx";
 
@@ -49,6 +50,12 @@ function App() {
             path="/"
             element={
               <Navigate to={'/dashboard'}/>
+            }
+          />
+          <Route
+            path="/check"
+            element={
+              <Check/>
             }
           />    
           {/* Catch-all Route for 404 */}
