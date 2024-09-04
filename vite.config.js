@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // Load environment variables
-const backendApiUrl = process.env.VITE_BACKEND_API;
+const backendApiUrl = import.meta.env.VITE_BACKEND_API;
 
 export default defineConfig({
   plugins: [react()],
