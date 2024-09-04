@@ -13,7 +13,8 @@ const ProtectedRoute = ({ element, requiredRole }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const getAuth = async () => {
-      
+      console.log("VITE_BACKEND_API:", import.meta.env.VITE_BACKEND_API);
+
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_API}/api/user-info`,
