@@ -5,7 +5,7 @@ const Check = () => {
     useEffect(() => {
         const getdata = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_BACKEND_API}/`)
+                const res = await axios.get(`/api`)
                 console.log(res.data) // Use res.data to get the response body
             } catch (error) {
                 console.error("Error fetching data:", error)
