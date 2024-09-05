@@ -21,7 +21,7 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_API}/login`, data);
+      const res = await axios.post(`/api/login`, data);
       localStorage.setItem('token', res.data.token);
       console.log(res)
       dispatch(login());

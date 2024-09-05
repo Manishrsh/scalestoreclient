@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to your backend server
       '/api': {
-        target: 'http://manishsoftwarecompanybackend.scalestore.shop',
+        target: 'http://manishsofbackend.scalestore.shop',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
