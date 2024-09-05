@@ -10,7 +10,7 @@ export default defineConfig({
         target: 'http://manishsofbackend.scalestore.shop',
         changeOrigin: true,
         // Remove rewrite if your backend API has /api in the URL
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
