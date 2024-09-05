@@ -5,7 +5,7 @@ const Check = () => {
     useEffect(() => {
         const getdata = async () => {
             try {
-                const res = await axios.get(`/api`)
+                const res = await axios.get(`http://manishsofbackend.scalestore.shop/api`)
                 console.log(res.data) // Use res.data to get the response body
             } catch (error) {
                 console.error("Error fetching data:", error)
