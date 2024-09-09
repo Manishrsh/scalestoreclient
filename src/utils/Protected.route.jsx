@@ -24,6 +24,8 @@ const ProtectedRoute = ({ element, requiredRole }) => {
             },
           }
         );
+        console.log(response.data)
+
           console.log(response.data.role)
          const userrole = response.data.role;
          setuserRole(userrole)
