@@ -30,7 +30,7 @@ function App() {
           {/* Protected Routes */}
           <Route
             path="/dashboard"
-            element={<ProtectedRoute element={<Card />} />}
+             element={<Card />} 
           />
           <Route
             path="/heathcheck"
