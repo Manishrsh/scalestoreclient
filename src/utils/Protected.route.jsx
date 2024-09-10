@@ -17,7 +17,7 @@ const ProtectedRoute = ({ element, requiredRole }) => {
 
       try {
         const response = await axios.get(
-          `https://aai.scalestore.shop/api/user-info`,
+          `https://ganpatibappamoryaaaaomnamogbackend.scalestore.shop/api/user-info`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

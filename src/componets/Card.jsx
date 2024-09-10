@@ -29,7 +29,7 @@ const Cards = () => {
       const apiUrl = import.meta.env.VITE_BACKEND_API;
       console.log(apiUrl)
       try {
-        const response = await fetch(`https://aai.scalestore.shop/api/product/get`, {
+        const response = await fetch(`https://ganpatibappamoryaaaaomnamogbackend.scalestore.shop/api/product/get`, {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
             'Content-Type': 'application/json',
