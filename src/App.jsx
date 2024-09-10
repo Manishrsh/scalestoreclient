@@ -23,7 +23,7 @@ function App() {
       <>
         {!shouldHideNav && <Navbars />}
         <Routes>
-          {/* Public Routes */}
+          {/* Public Routessdfsfs */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
 
