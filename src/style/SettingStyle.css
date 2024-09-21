@@ -1,0 +1,28 @@
+.title{
+    font-size: 25px;
+    color: grey;
+    margin-bottom: 20px;
+}
+.wappper{
+    margin-bottom: 20px;
+    background-color: white;
+    margin: 20px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 2px 3px lightgray;
+}
+.main{
+    padding: 50px;
+    border-radius: 15px;
+}
+.titleinput{
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 2px 2px 2px 3px lightgray;
+}
+.colorselect{
+    width: 50%;
+    border: none;
+}

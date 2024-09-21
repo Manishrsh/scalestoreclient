@@ -19,7 +19,7 @@ export default function Inquiry() {
         productName, // Include the product name in the submitted data
       };
 
-      await axios.post(`${import.meta.env.VITE_BACKEND_API}/sendinquiry/send`, inquiryData, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_API}/api/sendinquiry/send`, inquiryData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -43,7 +43,7 @@ export default function Inquiry() {
 
     const getproductname = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/product/productname?productid=${productid}`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/api/product/productname?productid=${productid}`, {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
             'Content-Type': 'application/json',

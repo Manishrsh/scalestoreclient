@@ -14,10 +14,12 @@ const ProtectedRoute = ({ element, requiredRole }) => {
   useEffect(() => {
     const getAuth = async () => {
       console.log("VITE_BACKEND_API:", import.meta.env.VITE_BACKEND_API);
+      const apiUrl = import.meta.env.VITE_BACKEND_API;
+
 
       try {
         const response = await axios.get(
-          `https://ganpatibappamoryaaaaomnamogbackend.scalestore.shop/api/user-info`,
+          `${apiUrl}/api/user-info`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

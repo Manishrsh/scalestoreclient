@@ -7,11 +7,13 @@ import '../style/LoginPage.css'
 import axios from 'axios'
 
 const Register = () => {
+  const apiUrl = import.meta.env.VITE_BACKEND_API;
+
   const { register, handleSubmit } = useForm();
   
     const onSubmit = async(data)=>{
       try {
-      const responce = await axios.post('http://localhost:3000/register',data)
+      const responce = await axios.post(`${apiUrl}/api/register`,data)
           console.log(responce)
     }
   catch (error) {

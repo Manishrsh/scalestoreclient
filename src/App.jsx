@@ -6,9 +6,12 @@ import Inquiry from "./componets/Inquiry.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import Register from "./pages/Register.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
+import Setting from "./pages/Setting.jsx";
+import InquiryAll from "./pages/InquiryAll.jsx";
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import Heathcheck from "./componets/Heathcheck.jsx";
+import MyOrders from "./componets/MyOrders.jsx";
 import Check from "./componets/Check.jsx";
 import Page404 from "./pages/Page404.jsx";
 import ProtectedRoute from "./utils/Protected.route.jsx";
@@ -30,7 +33,11 @@ function App() {
           {/* Protected Routes */}
           <Route
             path="/dashboard"
-             element={<Card />} 
+            element={<ProtectedRoute element={<Card />} />}
+          />
+           <Route
+            path="myorders"
+            element={<ProtectedRoute element={<MyOrders />} />}
           />
           <Route
             path="/heathcheck"
@@ -44,6 +51,18 @@ function App() {
             path="/addproduct"
             element={
               <ProtectedRoute element={<AddProduct />} requiredRole="admin" />
+            }
+          />
+          <Route
+            path="/setting"
+            element={
+              <ProtectedRoute element={<Setting />} requiredRole="admin" />
+            }
+          />
+          <Route
+            path="/inquiryall"
+            element={
+              <ProtectedRoute element={<InquiryAll />} requiredRole="admin" />
             }
           />
           <Route

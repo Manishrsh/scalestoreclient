@@ -24,12 +24,15 @@ const Cards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const primary = localStorage.getItem('primaryColor');
+  const secondary = localStorage.getItem('secondaryColor');
+  const bordertype = localStorage.getItem('bordertype');
   useEffect(() => {
     const fetchData = async () => {
       const apiUrl = import.meta.env.VITE_BACKEND_API;
       console.log(apiUrl)
       try {
-        const response = await fetch(`${apiUrl}/api/product/get`, {
+        const response = await fetch(`/api/product/get`, {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
             'Content-Type': 'application/json',
@@ -72,11 +75,11 @@ const Cards = () => {
         {prodata.length > 0 ? (
           prodata.map((item, index) => (
             <Col sm={4} key={index} >
-              <Card sx={{ maxWidth: 300, mb: 5, maxHeight: 350 }}>
+              <Card sx={{ maxWidth: 300, mb: 5, maxHeight: 350 , bgcolor: primary , }}>
                 <CardMedia
                   sx={{
                     height: 200,
-                    backgroundSize: 'contain',
+                    backgroundSize: 'contain'
                   }}
                   image={item.imageUrl}
                   title={item.productname}
