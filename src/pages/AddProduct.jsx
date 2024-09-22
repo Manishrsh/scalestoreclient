@@ -5,7 +5,10 @@ import "../style/AddProduct.css";
 import axios from "axios";
 import useAuth from "../hooks/auth";
 
+
 const AddProduct = () => {
+  const apiUrl = import.meta.env.VITE_BACKEND_API;
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -35,7 +38,7 @@ const AddProduct = () => {
       formData.append('price', data.price);
       formData.append('quantity', data.quantity);
 
-      const res = await axios.post('http://localhost:3000/product/add', formData, {
+      const res = await axios.post(`${apiUrl}/api/product/add`, formData, {
         headers: {
           'Authorization': `Bearer ${getAuthToken()}`,
           'Content-Type': 'multipart/form-data',

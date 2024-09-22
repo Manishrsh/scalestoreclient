@@ -7,7 +7,7 @@ const InquiryAll = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/api/sendinquiry/get');
+                const res = await axios.get('/api/sendinquiry/get');
                 console.log(res.data);
                 setData(res.data);  // Correctly set the data
             } catch (error) {
