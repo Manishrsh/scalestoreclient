@@ -32,7 +32,7 @@ const Cards = () => {
       const apiUrl = import.meta.env.VITE_BACKEND_API;
       console.log(apiUrl)
       try {
-        const response = await fetch(`/api/product/get`, {
+        const response = await fetch(`${apiUrl}/api/product/get`, {
           headers: {
             Authorization: `Bearer ${getAuthToken()}`,
             'Content-Type': 'application/json',
